@@ -23,7 +23,7 @@ export default function VoiceAgentScreen({ navigation }) {
   const flatListRef = useRef(null);
   const isListeningRef = useRef(false);
 
-  // Map language codes to TTS and speech recognition codes
+
   const getLanguageCodes = () => {
     const langMap = {
       'en-US': { tts: 'en-US', speech: 'en-US' },
@@ -40,18 +40,18 @@ export default function VoiceAgentScreen({ navigation }) {
 
   useEffect(() => {
     const codes = getLanguageCodes();
-    
-    // Initialize TTS with user's language
+
+
     Tts.setDefaultLanguage(codes.tts);
     Tts.setDefaultRate(0.5);
     Tts.setDefaultPitch(1.0);
 
-    // TTS events
+
     Tts.addEventListener('tts-start', () => setIsSpeaking(true));
     Tts.addEventListener('tts-finish', () => setIsSpeaking(false));
     Tts.addEventListener('tts-cancel', () => setIsSpeaking(false));
 
-    // Voice recognition events
+
     const onResultsListener = VoiceToText.addEventListener('onSpeechResults', (event) => {
       console.log('Speech results received:', event);
       if (event && event.value && event.value.length > 0) {
@@ -81,10 +81,10 @@ export default function VoiceAgentScreen({ navigation }) {
       }, 500);
     });
 
-    // Add welcome message and speak it
+
     addWelcomeMessage();
 
-    // Set speech recognition language
+
     VoiceToText.setRecognitionLanguage(codes.speech).catch(console.error);
 
     return () => {
@@ -92,11 +92,11 @@ export default function VoiceAgentScreen({ navigation }) {
       Tts.removeAllListeners('tts-start');
       Tts.removeAllListeners('tts-finish');
       Tts.removeAllListeners('tts-cancel');
-      
+
       if (onResultsListener) onResultsListener.remove();
       if (onErrorListener) onErrorListener.remove();
       if (onEndListener) onEndListener.remove();
-      
+
       VoiceToText.destroy().catch(console.error);
     };
   }, [currentLanguage]);
@@ -107,7 +107,7 @@ export default function VoiceAgentScreen({ navigation }) {
       'en'
     );
     addMessage(welcomeMsg, 'bot');
-    // Speak welcome message
+
     Tts.speak(welcomeMsg);
   };
 
@@ -147,15 +147,15 @@ export default function VoiceAgentScreen({ navigation }) {
         await VoiceToText.stopListening();
         await new Promise(resolve => setTimeout(resolve, 500));
       }
-      
+
       console.log('Starting to listen...');
       isListeningRef.current = true;
       setIsListening(true);
-      
+
       await VoiceToText.startListening();
       console.log('Listening started');
-      
-      // Auto-stop after 10 seconds
+
+
       setTimeout(async () => {
         if (isListeningRef.current) {
           await stopListening();
@@ -185,28 +185,28 @@ export default function VoiceAgentScreen({ navigation }) {
   const processQuery = async (query) => {
     try {
       setIsLoading(true);
-      
-      // Translate query to English for processing if needed
-      const englishQuery = currentLanguage === 'en-US' 
-        ? query 
+
+
+      const englishQuery = currentLanguage === 'en-US'
+        ? query
         : await translateDynamic(query, currentLanguage.split('-')[0]);
-      
+
       console.log('Original query:', query);
       console.log('English query:', englishQuery);
-      
-      // Get response in English
+
+
       const englishResponse = getResponse(englishQuery);
-      
-      // Translate response back to user's language
+
+
       const response = currentLanguage === 'en-US'
         ? englishResponse
         : await translateDynamic(englishResponse, 'en');
-      
+
       addMessage(response, 'bot');
-      
-      // Speak response in user's language
+
+
       Tts.speak(response);
-      
+
     } catch (error) {
       console.error('Error processing query:', error);
       const fallbackMsg = await translateDynamic('Sorry, I encountered an error. Please try again.', 'en');
@@ -219,63 +219,63 @@ export default function VoiceAgentScreen({ navigation }) {
 
   const getResponse = (query) => {
     const lowerQuery = query.toLowerCase();
-    
-    // Name
+
+
     if (lowerQuery.match(/\b(what is your name|your name|who are you|what are you called)\b/)) {
       return 'I am your financial assistant, here to help you with all your money matters. You can call me FinBot. How can I help you today?';
     }
-    
-    // Greetings
+
+
     if (lowerQuery.match(/\b(hello|hi|hey|good morning|good evening|namaste)\b/)) {
       return 'Hello! How can I assist you with your finances today?';
     }
-    
-    // Expenses
+
+
     if (lowerQuery.match(/\b(expense|spent|spending|cost|money spent)\b/)) {
       return 'I can help you track your expenses. You can view your spending history, add new expenses, and analyze your spending patterns in the expenses section of the app.';
     }
-    
-    // Budget
+
+
     if (lowerQuery.match(/\b(budget|save|saving|savings)\b/)) {
       return 'Managing your budget is important for financial health. You can set spending limits, track your savings goals, and get insights on where to cut costs in the budget section.';
     }
-    
-    // Loans
+
+
     if (lowerQuery.match(/\b(loan|borrow|credit|emi)\b/)) {
       return 'We offer various loan options including personal loans, home loans, and business loans. Interest rates start from 10 percent per annum. You can check your eligibility and apply directly through the app.';
     }
-    
-    // Investment
+
+
     if (lowerQuery.match(/\b(invest|investment|mutual fund|stock|share|fd|fixed deposit)\b/)) {
       return 'Investment options include mutual funds with 12 to 15 percent returns, fixed deposits with guaranteed 6 to 7 percent returns, government bonds, and gold. Each option has different risk and return profiles. Would you like to know more about any specific option?';
     }
-    
-    // Schemes
+
+
     if (lowerQuery.match(/\b(scheme|government scheme|subsidy|benefit)\b/)) {
       return 'There are several government schemes available for financial assistance, education, housing, and business. You can check your eligibility for schemes like Pradhan Mantri Awas Yojana, Mudra Loan, and others in the schemes section.';
     }
-    
-    // UPI/Payment
+
+
     if (lowerQuery.match(/\b(upi|payment|pay|transfer|send money)\b/)) {
       return 'You can make instant payments using UPI. Simply scan a QR code or enter the recipient\'s UPI ID. Payments are secure and instant. You can also practice UPI payments in our simulation section.';
     }
-    
-    // Account/Balance
+
+
     if (lowerQuery.match(/\b(account|balance|bank|statement)\b/)) {
       return 'You can check your account balance, view transaction history, and download statements from the accounts section. All your financial information is securely stored and easily accessible.';
     }
-    
-    // Help
+
+
     if (lowerQuery.match(/\b(help|what can you do|features|assist)\b/)) {
       return 'I can help you with tracking expenses, managing budgets, checking loan eligibility, exploring investment options, finding government schemes, making UPI payments, and answering financial questions. Just ask me anything!';
     }
-    
-    // Thank you
+
+
     if (lowerQuery.match(/\b(thank|thanks|appreciate)\b/)) {
       return 'You\'re welcome! I\'m here to help whenever you need financial assistance. Feel free to ask me anything else.';
     }
-    
-    // Default response
+
+
     return 'I understand. I can help you with expenses, budgets, loans, investments, government schemes, and payments. What would you like to know more about?';
   };
 
@@ -292,7 +292,7 @@ export default function VoiceAgentScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      {/* Header */}
+      {}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <ChevronLeft color="#1E293B" size={28} />
@@ -322,7 +322,7 @@ export default function VoiceAgentScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Messages */}
+      {}
       <FlatList
         ref={flatListRef}
         data={messages}
@@ -338,7 +338,7 @@ export default function VoiceAgentScreen({ navigation }) {
         }
       />
 
-      {/* Typing Indicator */}
+      {}
       {isLoading && (
         <View style={styles.typingContainer}>
           <ActivityIndicator size="small" color="#666" />
@@ -346,7 +346,7 @@ export default function VoiceAgentScreen({ navigation }) {
         </View>
       )}
 
-      {/* Voice Control - Large Mic Button */}
+      {}
       <View style={styles.controlContainer}>
         <Text style={styles.instructionText}>
           {isListening ? t('listening') + '...' : t('tapToSpeak')}

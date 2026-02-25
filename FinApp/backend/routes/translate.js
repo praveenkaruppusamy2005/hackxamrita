@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { TranslateClient, TranslateTextCommand } = require('@aws-sdk/client-translate');
 
-// Configure AWS Translate Client using environment variables
+
 const translateClient = new TranslateClient({
-    region: 'ap-south-1', // Defaulting to Mumbai, adjust if your role is elsewhere
+    region: 'ap-south-1',
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY,
         secretAccessKey: process.env.AWS_SECRET_KEY
@@ -22,17 +22,17 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        // Prepare the translation command
+
         const command = new TranslateTextCommand({
             Text: text,
             SourceLanguageCode: source,
             TargetLanguageCode: target
         });
 
-        // Execute translation
+
         const response = await translateClient.send(command);
 
-        // Return translated text
+
         res.json({ translatedText: response.TranslatedText });
 
     } catch (error) {

@@ -24,7 +24,7 @@ import {
 } from '@ascendtis/react-native-voice-to-text';
 import { useLanguage } from './LanguageContext';
 
-// 🔤 Transliterate English -> Tamil using Google Input Tools
+
 const transliterateToTamil = async (text) => {
     try {
         const response = await fetch(
@@ -44,7 +44,7 @@ const transliterateToTamil = async (text) => {
     }
 };
 
-// ⬇ Arrow component
+
 const BouncingArrow = () => {
     const { t } = useLanguage();
     const translateY = useRef(new Animated.Value(0)).current;
@@ -89,11 +89,11 @@ export default function UserDetailsScreen({ navigation }) {
     const [dobYear, setDobYear] = useState('');
 
     const [pickerVisible, setPickerVisible] = useState(false);
-    const [pickerType, setPickerType] = useState(null); // 'day' | 'month' | 'year'
+    const [pickerType, setPickerType] = useState(null);
 
     const [isListeningName, setIsListeningName] = useState(false);
 
-    // Derived DOB
+
     const dob =
         dobDay && dobMonth && dobYear ? `${dobDay}/${dobMonth}/${dobYear}` : '';
 
@@ -119,14 +119,14 @@ export default function UserDetailsScreen({ navigation }) {
         String(currentYear - i),
     );
 
-    // Which field should show the arrow
+
     let activeField = 'none';
     if (!mobileNumber) activeField = 'mobileNumber';
     else if (!firstName) activeField = 'firstName';
     else if (!gender) activeField = 'gender';
     else if (!dob) activeField = 'dob';
 
-    // 🎤 Request Microphone Permission
+
     const requestMicPermission = async () => {
         if (Platform.OS === 'android') {
             try {
@@ -148,14 +148,14 @@ export default function UserDetailsScreen({ navigation }) {
         return true;
     };
 
-    // 🎤 Speech Listeners
+
     useEffect(() => {
         const handleFinal = async (event) => {
             if (!event || !event.value) return;
 
             let text = event.value;
 
-            // If current app language is Tamil, transliterate
+
             if (currentLanguage && currentLanguage.startsWith('ta')) {
                 text = await transliterateToTamil(text);
             }
@@ -199,7 +199,7 @@ export default function UserDetailsScreen({ navigation }) {
         };
     }, [currentLanguage]);
 
-    // 🌐 Setup recognition language when language changes
+
     useEffect(() => {
         const setup = async () => {
             try {
@@ -214,7 +214,7 @@ export default function UserDetailsScreen({ navigation }) {
         setup();
     }, [currentLanguage]);
 
-    // Toggle mic for first name
+
     const toggleListeningName = async () => {
         try {
             if (isListeningName) {
@@ -247,14 +247,14 @@ export default function UserDetailsScreen({ navigation }) {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
+                    {}
                     <View style={styles.header}>
                         <Text style={styles.title}>{t('profileDetails')}</Text>
                         <Text style={styles.subtitle}>{t('personalInfo')}</Text>
                     </View>
 
                     <View style={styles.formContainer}>
-                        {/* Mobile */}
+                        {}
                         {activeField === 'mobileNumber' && <BouncingArrow />}
                         <Text style={styles.label}>{t('mobileNumber')}</Text>
                         <TextInput
@@ -270,7 +270,7 @@ export default function UserDetailsScreen({ navigation }) {
                             placeholderTextColor="#A0A0A0"
                         />
 
-                        {/* First Name + Mic */}
+                        {}
                         {activeField === 'firstName' && <BouncingArrow />}
                         <Text style={styles.label}>{t('firstName')}</Text>
                         <View style={styles.recordInputContainer}>
@@ -301,7 +301,7 @@ export default function UserDetailsScreen({ navigation }) {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Gender */}
+                        {}
                         {activeField === 'gender' && <BouncingArrow />}
                         <Text style={styles.label}>{t('gender')}</Text>
                         <View style={styles.genderContainer}>
@@ -324,11 +324,11 @@ export default function UserDetailsScreen({ navigation }) {
                             ))}
                         </View>
 
-                        {/* DOB */}
+                        {}
                         {activeField === 'dob' && <BouncingArrow />}
                         <Text style={styles.label}>{t('dob')}</Text>
                         <View style={styles.dobContainer}>
-                            {/* Day */}
+                            {}
                             <TouchableOpacity
                                 style={[
                                     styles.input,
@@ -349,7 +349,7 @@ export default function UserDetailsScreen({ navigation }) {
                                 </Text>
                             </TouchableOpacity>
 
-                            {/* Month */}
+                            {}
                             <TouchableOpacity
                                 style={[
                                     styles.input,
@@ -374,7 +374,7 @@ export default function UserDetailsScreen({ navigation }) {
                                 </Text>
                             </TouchableOpacity>
 
-                            {/* Year */}
+                            {}
                             <TouchableOpacity
                                 style={[
                                     styles.input,
@@ -396,7 +396,7 @@ export default function UserDetailsScreen({ navigation }) {
                             </TouchableOpacity>
                         </View>
 
-                        {/* DOB Picker Modal */}
+                        {}
                         <Modal visible={pickerVisible} transparent animationType="fade">
                             <View style={styles.modalOverlay}>
                                 <View style={styles.calendarContainer}>
@@ -471,7 +471,7 @@ export default function UserDetailsScreen({ navigation }) {
                     </View>
                 </ScrollView>
 
-                {/* Footer */}
+                {}
                 <View style={styles.footer}>
                     <TouchableOpacity
                         style={[

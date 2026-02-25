@@ -2,210 +2,210 @@ import React, { createContext, useState, useContext } from 'react';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Define the fully static, robust online dictionary for the 8 supported languages
-// export const translations = {
-//     'en-US': {
-//         hello: "Hello",
-//         greeting: "Good Morning,",
-//         govtSchemes: "Govt Schemes",
-//         status: "Status",
-//         active: "Active",
-//         explore: "Explore",
-//         loanCheck: "Loan Check",
-//         approval: "Approval",
-//         instant: "Instant",
-//         apply: "Apply",
-//         aiChatBot: "AI Chat Bot",
-//         service: "Service",
-//         tfs: "24/7",
-//         chat: "Chat",
-//         simulations: "Simulations",
-//         mode: "Mode",
-//         dar: "3D/AR",
-//         start: "Start",
-//         aiAssistant: "AI Assistant",
-//         aiHelp: "How can I help you today?",
-//         tapToSpeak: "Tap to Speak",
-//         tapToStop: "Tap to Stop",
-//         interaction: "Interaction",
-//         assistGreeting: "Hello! How can I assist you today?"
-//     },
-//     'ta-IN': {
-//         greeting: "காலை வணக்கம்,",
-//         govtSchemes: "அரசு திட்டங்கள்",
-//         status: "நிலை",
-//         active: "செயலில்",
-//         explore: "ஆராய்க",
-//         loanCheck: "கடன் சரிபார்ப்பு",
-//         approval: "ஒப்புதல்",
-//         instant: "உடனடி",
-//         apply: "விண்ணப்பிக்கவும்",
-//         aiChatBot: "AI அரட்டை",
-//         service: "சேவை",
-//         tfs: "24/7",
-//         chat: "அரட்டை",
-//         simulations: "உருவகப்படுத்துதல்",
-//         mode: "முறை",
-//         dar: "3D/AR",
-//         start: "தொடங்கு",
-//         aiAssistant: "AI உதவியாளர்",
-//         aiHelp: "இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?",
-//         tapToSpeak: "பேச தட்டவும்",
-//         tapToStop: "நிறுத்த தட்டவும்",
-//         interaction: "தொடர்பு",
-//         assistGreeting: "வணக்கம்! இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?"
-//     },
-//     'hi-IN': {
-//         greeting: "सुप्रभात,",
-//         govtSchemes: "सरकारी योजनाएं",
-//         status: "स्थिति",
-//         active: "सक्रिय",
-//         explore: "अन्वेषण",
-//         loanCheck: "ऋण जांच",
-//         approval: "मंजूरी",
-//         instant: "तत्काल",
-//         apply: "आवेदन करें",
-//         aiChatBot: "AI चैट बॉट",
-//         service: "सेवा",
-//         tfs: "24/7",
-//         chat: "चैट",
-//         simulations: "सिम्युलेशन",
-//         mode: "मोड",
-//         dar: "3D/AR",
-//         start: "शुरू",
-//         aiAssistant: "AI सहायक",
-//         aiHelp: "आज मैं आपकी कैसे मदद कर सकता हूँ?",
-//         tapToSpeak: "बोलने के लिए टैप करें",
-//         tapToStop: "रोकने के लिए टैप करें",
-//         interaction: "बातचीत",
-//         assistGreeting: "नमस्ते! आज मैं आपकी कैसे सहायता कर सकता हूँ?"
-//     },
-//     'te-IN': {
-//         greeting: "శుభోదయం,",
-//         govtSchemes: "ప్రభుత్వ పథకాలు",
-//         status: "స్థితి",
-//         active: "క్రియాశీల",
-//         explore: "అన్వేషించండి",
-//         loanCheck: "రుణ తనిఖీ",
-//         approval: "ఆమోదం",
-//         instant: "తక్షణ",
-//         apply: "దరఖాస్తు",
-//         aiChatBot: "AI చాట్ బాట్",
-//         service: "సేవ",
-//         tfs: "24/7",
-//         chat: "చాట్",
-//         simulations: "సిమ్యులేషన్స్",
-//         mode: "మోడ్",
-//         dar: "3D/AR",
-//         start: "ప్రారంభించండి",
-//         aiAssistant: "AI సహాయకుడు",
-//         aiHelp: "ఈ రోజు నేను మీకు ఎలా సహాయం చేయగలను?",
-//         tapToSpeak: "మాట్లాడటానికి నొక్కండి",
-//         tapToStop: "ఆపడానికి నొక్కండి",
-//         interaction: "పరస్పర చర్య",
-//         assistGreeting: "నమస్కారం! ఈ రోజు నేను మీకు ఎలా సహాయం చేయగలను?"
-//     },
-//     'kn-IN': {
-//         greeting: "ಶುಭೋದಯ,",
-//         govtSchemes: "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು",
-//         status: "ಸ್ಥಿತಿ",
-//         active: "ಸಕ್ರಿಯ",
-//         explore: "ಅನ್ವೇಷಿಸಿ",
-//         loanCheck: "ಸಾಲ ತಪಾಸಣೆ",
-//         approval: "ಅನುಮೋದನೆ",
-//         instant: "ತ್ವರಿತ",
-//         apply: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
-//         aiChatBot: "AI ಚಾಟ್ ಬಾಟ್",
-//         service: "ಸೇವೆ",
-//         tfs: "24/7",
-//         chat: "ಚಾಟ್",
-//         simulations: "ಸಿಮ್ಯುಲೇಶನ್ಸ್",
-//         mode: "ಮೋಡ್",
-//         dar: "3D/AR",
-//         start: "ಪ್ರಾರಂಭಿಸಿ",
-//         aiAssistant: "AI ಸಹಾಯಕ",
-//         aiHelp: "ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
-//         tapToSpeak: "ಮಾತನಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
-//         tapToStop: "ನಿಲ್ಲಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
-//         interaction: "ಸಂವಹನ",
-//         assistGreeting: "ನಮಸ್ಕಾರ! ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?"
-//     },
-//     'ml-IN': {
-//         greeting: "സുപ്രഭാതം,",
-//         govtSchemes: "സർക്കാർ പദ്ധതികൾ",
-//         status: "പദവി",
-//         active: "സജീവമാണ്",
-//         explore: "പര്യവേക്ഷണം ചെയ്യുക",
-//         loanCheck: "ലോൺ പരിശോധന",
-//         approval: "അംഗീകാരം",
-//         instant: "തൽക്ഷണം",
-//         apply: "അപേക്ഷിക്കുക",
-//         aiChatBot: "AI ചാറ്റ് ബോട്ട്",
-//         service: "സേവനം",
-//         tfs: "24/7",
-//         chat: "ചാറ്റ്",
-//         simulations: "സിമുലേഷൻസ്",
-//         mode: "മോഡ്",
-//         dar: "3D/AR",
-//         start: "തുടങ്ങുക",
-//         aiAssistant: "AI സഹായി",
-//         aiHelp: "ഇന്ന് എന്നെ എങ്ങനെ സഹായിക്കാനാകും?",
-//         tapToSpeak: "സംസാരിക്കാൻ ടാപ്പ് ചെയ്യുക",
-//         tapToStop: "നിർത്താൻ ടാപ്പ് ചെയ്യുക",
-//         interaction: "ഇടപെടൽ",
-//         assistGreeting: "നമസ്കാരം! ഇന്ന് എന്നെ എങ്ങനെ സഹായിക്കാനാകും?"
-//     },
-//     'mr-IN': {
-//         greeting: "शुभ प्रभात,",
-//         govtSchemes: "सरकारी योजना",
-//         status: "स्थिती",
-//         active: "सक्रिय",
-//         explore: "अन्वेषण करा",
-//         loanCheck: "कर्ज तपासणी",
-//         approval: "मंजुरी",
-//         instant: "झटपट",
-//         apply: "अर्ज करा",
-//         aiChatBot: "AI चॅट बॉट",
-//         service: "सेवा",
-//         tfs: "24/7",
-//         chat: "चॅट",
-//         simulations: "सिम्युलेशन",
-//         mode: "मोड",
-//         dar: "3D/AR",
-//         start: "सुरू करा",
-//         aiAssistant: "AI सहाय्यक",
-//         aiHelp: "आज मी तुमची कशी मदत करू शकतो?",
-//         tapToSpeak: "बोलण्यासाठी टॅप करा",
-//         tapToStop: "थांबवण्यासाठी टॅप करा",
-//         interaction: "संवाद",
-//         assistGreeting: "नमस्कार! मी तुम्हाला कशी मदत करू शकतो?"
-//     },
-//     'bn-IN': {
-//         greeting: "সুপ্রভাত,",
-//         govtSchemes: "সরকারি প্রকল্প",
-//         status: "স্ট্যাটাস",
-//         active: "সক্রিয়",
-//         explore: "অন্বেষণ করুন",
-//         loanCheck: "ঋণ চেক",
-//         approval: "অনুমোদন",
-//         instant: "তাত্ক্ষণিক",
-//         apply: "আবেদন করুন",
-//         aiChatBot: "AI চ্যাট বট",
-//         service: "পরিষেবা",
-//         tfs: "24/7",
-//         chat: "চ্যাট",
-//         simulations: "সিমুলেশন",
-//         mode: "মোড",
-//         dar: "3D/AR",
-//         start: "শুরু করুন",
-//         aiAssistant: "AI সহকারী",
-//         aiHelp: "আজ আমি আপনাকে কীভাবে সাহায্য করতে পারি?",
-//         tapToSpeak: "কথা বলতে আলতো চাপুন",
-//         tapToStop: "থামাতে আলতো চাপুন",
-//         interaction: "মিথস্ক্রিয়া",
-//         assistGreeting: "নমস্কার! আমি আপনাকে কীভাবে সাহায্য করতে পারি?"
-//     }
-// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const LanguageContext = createContext();
 
@@ -214,7 +214,7 @@ export const LanguageProvider = ({ children }) => {
     const [translations, setTranslations] = useState({});
     const [isTranslating, setIsTranslating] = useState(false);
 
-    // Initial load from AsyncStorage
+
     React.useEffect(() => {
         const loadSavedLanguage = async () => {
             try {
@@ -229,7 +229,7 @@ export const LanguageProvider = ({ children }) => {
         loadSavedLanguage();
     }, []);
 
-    // Wrapper to save to AsyncStorage
+
     const setCurrentLanguage = async (lang) => {
         setLangState(lang);
         try {
@@ -536,12 +536,12 @@ export const LanguageProvider = ({ children }) => {
         loadTranslations();
     }, [currentLanguage]);
 
-    // UI Translation getter
+
     const t = (key) => {
         return translations[key] || baseDictionary[key] || key;
     };
 
-    // Dynamic translation for any text
+
     const translateDynamic = async (text, sourceLang = 'auto') => {
         try {
             if (currentLanguage === 'en-US') return text;
@@ -554,7 +554,7 @@ export const LanguageProvider = ({ children }) => {
 
             if (sourceCode !== 'auto' && sourceCode === targetCode) return text;
 
-            // Use local machine IP for physical device testing
+
             const backendUrl = 'http://10.195.140.201:3000';
 
             const response = await fetch(`${backendUrl}/api/translate`, {
@@ -582,12 +582,12 @@ export const LanguageProvider = ({ children }) => {
         }
     };
 
-    // Helper to proxy external URLs through Google Translate Web interface
+
     const getTranslatedUrl = (url) => {
         if (!url) return '';
         const langCode = currentLanguage.split('-')[0];
 
-        // If English is selected, no need to translate via Google Translate proxy
+
         if (langCode === 'en') {
             return url;
         }

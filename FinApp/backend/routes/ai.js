@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Initialize Gemini API
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// Endpoint for fallback/proxy AI requests if direct frontend integration fails
+
 router.post('/generate', async (req, res) => {
     const { prompt } = req.body;
 

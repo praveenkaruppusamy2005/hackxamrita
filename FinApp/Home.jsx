@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
 
 
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-                    {/* 4 Cards Grid */}
+                    {}
                     <View style={styles.gridContainer}>
                         <TouchableOpacity
                             style={styles.card}

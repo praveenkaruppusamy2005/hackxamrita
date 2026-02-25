@@ -80,8 +80,8 @@ export default function LoanEligibilityScreen({ navigation }) {
             return;
         }
 
-        // Extremely simplified estimation: assuming 12% interest for 5 years (60 months)
-        const estimatedNewEmi = target * 0.0222; // rough emi factor
+
+        const estimatedNewEmi = target * 0.0222;
         const totalEmi = emi + estimatedNewEmi;
         const dti = (totalEmi / income) * 100;
 
@@ -97,7 +97,7 @@ export default function LoanEligibilityScreen({ navigation }) {
             finalRecommendations = REAL_LOANS.filter(loan => target <= loan.maxAmount);
         }
 
-        // Navigate to result screen with the calculated payloads
+
         navigation.navigate('LoanResult', {
             status: calculatedStatus,
             recommendations: finalRecommendations

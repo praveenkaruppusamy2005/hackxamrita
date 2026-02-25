@@ -47,7 +47,7 @@ export default function ProfileScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             await AsyncStorage.removeItem('userMobile');
-                            // Use navigation.reset to go back to language selection
+
                             navigation.reset({
                                 index: 0,
                                 routes: [{ name: 'LanguageSelection' }],

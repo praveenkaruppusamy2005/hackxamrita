@@ -12,9 +12,9 @@ export default function VoiceRecognitionScreen({ navigation }) {
     const [error, setError] = useState(null);
     const webViewRef = useRef(null);
 
-    // This is the Public Agent ID for ElevenLabs Conversational AI
-    // Users can replace this with their own specific Agent ID
-    const agentId = 'pNInz6obpgH9P39Pue6S'; // Placeholder for ElevenLabs Agent
+
+
+    const agentId = 'pNInz6obpgH9P39Pue6S';
     const embedUrl = `https://elevenlabs.io/app/conversational-ai/${agentId}?embed=true`;
 
     useEffect(() => {

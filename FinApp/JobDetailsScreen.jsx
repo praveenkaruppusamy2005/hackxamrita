@@ -4,7 +4,7 @@ import { useLanguage } from './LanguageContext';
 
 export default function JobDetailsScreen({ navigation, route }) {
     const { t } = useLanguage();
-    // Retrieve params passed from UserDetailsScreen
+
     const { mobileNumber, firstName, gender, dob } = route.params || {};
 
     const [jobType, setJobType] = useState('');

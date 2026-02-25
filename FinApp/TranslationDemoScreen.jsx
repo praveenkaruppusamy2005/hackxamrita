@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TextInput, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
   TouchableOpacity,
-  ActivityIndicator 
+  ActivityIndicator
 } from 'react-native';
 import { useLanguage } from './LanguageContext';
 import { useTranslationService } from './services/TranslationService';
 import TranslatedText from './components/TranslatedText';
 
-/**
- * Translation Demo Screen
- * Shows practical examples of using the translation service
- */
+
 export default function TranslationDemoScreen() {
   const { currentLanguage, translateDynamic } = useLanguage();
   const { translateText, isLoading } = useTranslationService();
-  
+
   const [userInput, setUserInput] = useState('');
   const [translatedOutput, setTranslatedOutput] = useState('');
 
@@ -29,7 +26,7 @@ export default function TranslationDemoScreen() {
     setTranslatedOutput(result);
   };
 
-  // Sample dynamic content that would come from API
+
   const notifications = [
     "Your loan application has been approved",
     "Please submit your documents by tomorrow",
@@ -41,7 +38,7 @@ export default function TranslationDemoScreen() {
       <Text style={styles.mainTitle}>Translation Service Demo</Text>
       <Text style={styles.subtitle}>Current Language: {currentLanguage}</Text>
 
-      {/* Section 1: Auto-Translated Static Text */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>1. Auto-Translated UI Text</Text>
         <View style={styles.card}>
@@ -57,31 +54,31 @@ export default function TranslationDemoScreen() {
         </View>
       </View>
 
-      {/* Section 2: Form Labels */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>2. Translated Form Labels</Text>
         <View style={styles.card}>
           <TranslatedText style={styles.label}>Full Name</TranslatedText>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter your name" 
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your name"
           />
-          
+
           <TranslatedText style={styles.label}>Email Address</TranslatedText>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter your email" 
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
           />
-          
+
           <TranslatedText style={styles.label}>Phone Number</TranslatedText>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter your phone" 
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your phone"
           />
         </View>
       </View>
 
-      {/* Section 3: Dynamic Content (Notifications) */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>3. Dynamic Notifications</Text>
         {notifications.map((notification, index) => (
@@ -93,7 +90,7 @@ export default function TranslationDemoScreen() {
         ))}
       </View>
 
-      {/* Section 4: User Input Translation */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>4. Translate Your Text</Text>
         <View style={styles.card}>
@@ -106,8 +103,8 @@ export default function TranslationDemoScreen() {
             multiline
             numberOfLines={3}
           />
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.translateButton}
             onPress={handleTranslate}
             disabled={isLoading || !userInput.trim()}
@@ -128,7 +125,7 @@ export default function TranslationDemoScreen() {
         </View>
       </View>
 
-      {/* Section 5: Common Messages */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>5. Common Messages</Text>
         <View style={styles.messageContainer}>
@@ -155,7 +152,7 @@ export default function TranslationDemoScreen() {
         </View>
       </View>
 
-      {/* Section 6: Instructions */}
+      {}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>6. Step-by-Step Instructions</Text>
         <View style={styles.card}>

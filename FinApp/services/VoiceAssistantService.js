@@ -8,9 +8,9 @@ class VoiceAssistantService {
     this.conversationHistory = [];
   }
 
-  // Build context-aware prompt with conversation history
+
   buildPrompt(userQuery, userProfile = null) {
-    let systemContext = `You are a helpful financial assistant integrated into a mobile app. 
+    let systemContext = `You are a helpful financial assistant integrated into a mobile app.
 Your role is to:
 - Answer questions clearly and concisely
 - Provide financial advice and guidance
@@ -31,7 +31,7 @@ Your role is to:
 `;
     }
 
-    // Add conversation history for context
+
     let conversationContext = '';
     if (this.conversationHistory.length > 0) {
       conversationContext = '\nRecent Conversation:\n';
@@ -43,22 +43,22 @@ Your role is to:
     return `${systemContext}${conversationContext}\nUser: ${userQuery}\nAssistant:`;
   }
 
-  // Get intelligent response from Gemini AI
+
   async getResponse(userQuery, userProfile = null) {
     try {
       const prompt = this.buildPrompt(userQuery, userProfile);
-      
+
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
 
-      // Add to conversation history
+
       this.conversationHistory.push(
         { role: 'user', text: userQuery },
         { role: 'assistant', text: text }
       );
 
-      // Keep only last 10 exchanges (20 messages)
+
       if (this.conversationHistory.length > 20) {
         this.conversationHistory = this.conversationHistory.slice(-20);
       }
@@ -66,46 +66,46 @@ Your role is to:
       return text;
     } catch (error) {
       console.error('Gemini API Error:', error);
-      
-      // Fallback to rule-based responses
+
+
       return this.getFallbackResponse(userQuery);
     }
   }
 
-  // Rule-based fallback responses
+
   getFallbackResponse(query) {
     const lowerQuery = query.toLowerCase();
 
-    // Greetings
+
     if (lowerQuery.match(/\b(hello|hi|hey|good morning|good evening)\b/)) {
       return "Hello! How can I help you with your finances today?";
     }
 
-    // Expenses
+
     if (lowerQuery.match(/\b(expense|spent|spending|cost)\b/)) {
       return "I can help you track your expenses. Would you like to add a new expense or review your spending?";
     }
 
-    // Budget
+
     if (lowerQuery.match(/\b(budget|save|saving)\b/)) {
       return "Managing your budget is important. I can help you set spending limits and track your savings goals.";
     }
 
-    // Help
+
     if (lowerQuery.match(/\b(help|what can you do|features)\b/)) {
       return "I can help you track expenses, manage budgets, analyze spending patterns, and answer financial questions. Just ask me anything!";
     }
 
-    // Default
+
     return "I'm here to help with your financial questions. Could you please rephrase that?";
   }
 
-  // Clear conversation history
+
   clearHistory() {
     this.conversationHistory = [];
   }
 
-  // Get conversation history
+
   getHistory() {
     return this.conversationHistory;
   }

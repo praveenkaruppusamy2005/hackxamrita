@@ -1,14 +1,8 @@
-/**
- * Simple test script to verify translation service
- * Run with: node test-translation-service.js
- * 
- * Note: This is a basic test. For React Native components,
- * test within the app by changing languages.
- */
+
 
 console.log('🧪 Translation Service Test\n');
 
-// Test 1: Check if package is installed
+
 console.log('✓ Test 1: Package Installation');
 try {
   require('@kan9229/react-native-translator');
@@ -18,7 +12,7 @@ try {
   process.exit(1);
 }
 
-// Test 2: Check if service file exists
+
 console.log('✓ Test 2: Service Files');
 const fs = require('fs');
 const path = require('path');
@@ -59,11 +53,11 @@ try {
   const { translations } = require('./LanguageContext');
   const languages = Object.keys(translations);
   console.log(`  ✅ ${languages.length} languages configured: ${languages.join(', ')}`);
-  
-  // Check if all languages have the same keys
+
+
   const enKeys = Object.keys(translations['en-US']);
   console.log(`  ✅ ${enKeys.length} translation keys available`);
-  
+
   languages.forEach(lang => {
     const keys = Object.keys(translations[lang]);
     if (keys.length === enKeys.length) {

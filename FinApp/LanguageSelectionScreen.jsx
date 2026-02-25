@@ -18,7 +18,7 @@ export default function LanguageSelectionScreen({ navigation }) {
     const [selectedLang, setSelectedLang] = useState(currentLanguage || 'en-US');
 
     const handleConfirm = () => {
-        // Navigate to the profiling flow after selection
+
         navigation.replace('UserDetails');
     };
 
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         borderColor: '#EFEFEF',
     },
     langCardSelected: {
-        backgroundColor: '#F3FAFF', // Light blue tint
+        backgroundColor: '#F3FAFF',
         borderColor: '#2196F3',
     },
     iconPlaceholder: {

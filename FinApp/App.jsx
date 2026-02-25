@@ -71,17 +71,17 @@ export default function App() {
             name="IncomeDetails"
             component={IncomeDetailsScreen}
           />
-        
+
           <Stack.Screen
             name="MainTabs"
             component={MainTabs}
           />
-          <Stack.Screen 
-            name="VoiceAgent" 
+          <Stack.Screen
+            name="VoiceAgent"
             component={VoiceAgentScreen}
           />
-          <Stack.Screen 
-            name="AIChatbot" 
+          <Stack.Screen
+            name="AIChatbot"
             component={AIChatbotScreen}
           />
           <Stack.Screen

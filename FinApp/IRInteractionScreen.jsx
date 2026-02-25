@@ -21,7 +21,7 @@ export default function IRInteractionScreen({ navigation }) {
                 </View>
 
                 <View style={styles.cameraPlaceholder}>
-                    {/* <Image source={require('./Assets/person1.jpg')} style={styles.fullImage} /> */}
+                    {}
                 </View>
             </View>
         </SafeAreaView>
@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
         padding: 24,
     },
     cameraPlaceholder: {
-        width: '40%', // Smaller image width
-        height: '40%', // Smaller image height
+        width: '40%',
+        height: '40%',
         backgroundColor: '#1A1A1A',
-        borderRadius: 20, // Adjusted border radius for smaller size
+        borderRadius: 20,
         justifyContent: 'center',
         alignSelf: 'flex-start',
         overflow: 'hidden',
-        marginTop: 40, // Push image down slightly to make room for larger bubble
+        marginTop: 40,
     },
     fullImage: {
         width: '100%',
@@ -68,10 +68,10 @@ const styles = StyleSheet.create({
     },
     chatBubble: {
         position: 'absolute',
-        top: '10%', // Move bubble higher
-        right: 10,  // Move bubble closer to edge
+        top: '10%',
+        right: 10,
         backgroundColor: '#FFFFFF',
-        paddingHorizontal: 24, // More padding for larger bubble
+        paddingHorizontal: 24,
         paddingVertical: 18,
         borderRadius: 24,
         borderBottomLeftRadius: 4,
@@ -79,15 +79,15 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.15,
         shadowRadius: 10,
-        elevation: 10, // Higher elevation for larger bubble
-        maxWidth: '65%', // Allow bubble to be wider
+        elevation: 10,
+        maxWidth: '65%',
         zIndex: 10,
     },
     chatText: {
-        fontSize: 18, // Larger font size
-        fontWeight: '500', // Slightly lighter font weight for better readability at larger sizes
+        fontSize: 18,
+        fontWeight: '500',
         color: '#1A1A1A',
-        lineHeight: 26, // Increased line height for larger font
+        lineHeight: 26,
     },
     bubbleTail: {
         position: 'absolute',

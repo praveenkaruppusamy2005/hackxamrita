@@ -1,22 +1,12 @@
 import { useState } from 'react';
 import { Platform } from 'react-native';
 
-/**
- * Translation Service Hook
- * Provides dynamic translation capabilities for any text in the app
- * Uses our own Node.js backend integration with AWS Translate
- */
+
 export const useTranslationService = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  /**
-   * Translate text to target language
-   * @param {string} text - Text to translate
-   * @param {string} targetLang - Target language code (e.g., 'ta', 'hi', 'te')
-   * @param {string} sourceLang - Source language code (default: 'auto')
-   * @returns {Promise<string>} Translated text
-   */
+
   const translateText = async (text, targetLang, sourceLang = 'auto') => {
     try {
       if (!text || text.trim() === '') return text;
@@ -32,7 +22,7 @@ export const useTranslationService = () => {
       setIsLoading(true);
       setError(null);
 
-      // Use local machine IP for physical device testing
+
       const backendUrl = 'http://localhost:3000';
 
       const response = await fetch(`${backendUrl}/api/translate`, {
@@ -60,9 +50,7 @@ export const useTranslationService = () => {
     }
   };
 
-  /**
-   * Translate multiple texts at once
-   */
+
   const translateBatch = async (texts, targetLang, sourceLang = 'auto') => {
     try {
       const promises = texts.map(t => translateText(t, targetLang, sourceLang));
@@ -81,9 +69,7 @@ export const useTranslationService = () => {
   };
 };
 
-/**
- * Language code mapping for common languages
- */
+
 export const LANGUAGE_CODES = {
   'en-US': 'en',
   'ta-IN': 'ta',
@@ -95,11 +81,7 @@ export const LANGUAGE_CODES = {
   'bn-IN': 'bn',
 };
 
-/**
- * Get short language code from full locale
- * @param {string} locale - Full locale code (e.g., 'ta-IN')
- * @returns {string} Short language code (e.g., 'ta')
- */
+
 export const getLanguageCode = (locale) => {
   return LANGUAGE_CODES[locale] || locale.split('-')[0];
 };

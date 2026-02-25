@@ -5,7 +5,7 @@ import { useLanguage } from './LanguageContext';
 
 export default function IncomeDetailsScreen({ navigation, route }) {
     const { t } = useLanguage();
-    // Retrieve all previous params
+
     const { mobileNumber, firstName, gender, dob, jobType } = route.params || {};
 
     const [monthlyIncome, setMonthlyIncome] = useState('');
@@ -15,7 +15,7 @@ export default function IncomeDetailsScreen({ navigation, route }) {
     const handleSubmit = async () => {
         setIsSubmitting(true);
         try {
-            // Replace with actual local IP or production URL
+
             const backendUrl = 'http://10.195.140.201:3000';
 
             const response = await fetch(`${backendUrl}/api/auth/profile`, {
@@ -44,10 +44,10 @@ export default function IncomeDetailsScreen({ navigation, route }) {
             const data = await response.json();
 
             if (response.ok) {
-                // Save mobile number for persistent session
+
                 await AsyncStorage.setItem('userMobile', mobileNumber);
 
-                // Navigate to main app
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'MainTabs' }],

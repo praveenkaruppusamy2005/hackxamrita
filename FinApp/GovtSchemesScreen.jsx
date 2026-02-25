@@ -154,20 +154,20 @@ export default function GovtSchemesScreen({ navigation }) {
                         const data = await response.json();
                         setProfileData(data);
 
-                        // Filter logic
+
                         filteredSchemes = SCHEMES_DATABASE.filter(scheme => {
-                            // Gender check
+
                             if (scheme.targetGender !== 'All' && data.gender && scheme.targetGender !== data.gender) {
                                 return false;
                             }
 
-                            // Income check
+
                             const userMonthlyIncome = parseInt(data.monthlyIncome?.replace(/,/g, '') || '0');
                             if (scheme.maxIncome !== null && userMonthlyIncome > scheme.maxIncome) {
                                 return false;
                             }
 
-                            // Job Type check
+
                             if (scheme.targetJobType !== 'All' && data.jobType && scheme.targetJobType !== data.jobType) {
                                 return false;
                             }
@@ -204,7 +204,7 @@ export default function GovtSchemesScreen({ navigation }) {
         };
 
         fetchProfileAndFilter();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [currentLanguage]);
 
     const openLink = (url) => {

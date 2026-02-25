@@ -66,7 +66,7 @@ export default function UPISimulationScreen({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [payee, setPayee] = useState(PAYEE_PERSONAS[0]);
 
-    // Camera hooks
+
     const device = useCameraDevice('back');
     const [hasCamPermission, setHasCamPermission] = useState(false);
     const [camActive, setCamActive] = useState(false);
@@ -90,7 +90,7 @@ export default function UPISimulationScreen({ navigation, route }) {
         onCodeScanned: (codes) => {
             if (camActive && codes.length > 0) {
                 Vibration.vibrate();
-                setCamActive(false); // Stop scanning immediately
+                setCamActive(false);
                 handleScannedData(codes[0].value);
             }
         }
@@ -99,10 +99,10 @@ export default function UPISimulationScreen({ navigation, route }) {
     const handleScannedData = (data) => {
         let newPayee = { name: t('unknownMerchant') || 'Merchant', id: 'merchant@upi', color: '#64748B', isBusiness: true };
 
-        // Parse basic UPI QR format: upi://pay?pa=...&pn=...
+
         if (typeof data === 'string' && data.startsWith('upi://')) {
             try {
-                // Split url format and just use custom matching logic
+
                 const queryParts = data.split('?')[1]?.split('&');
                 let pa = '';
                 let pn = '';
@@ -124,7 +124,7 @@ export default function UPISimulationScreen({ navigation, route }) {
         nextStep(STEPS.AMOUNT);
     };
 
-    // Virtual manual scan (if button pressed)
+
     const handleMockScan = () => {
         handleScannedData('upi://pay?pa=reliance@okaxis&pn=Reliance Smart');
     };
@@ -139,7 +139,7 @@ export default function UPISimulationScreen({ navigation, route }) {
         }, 400);
     };
 
-    // --- Renderers ---
+
     const renderHome = () => (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
@@ -152,7 +152,7 @@ export default function UPISimulationScreen({ navigation, route }) {
             </View>
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                {/* Scan CTA */}
+                {}
                 <TouchableOpacity
                     style={styles.heroButton}
                     activeOpacity={0.9}
@@ -168,7 +168,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                     <ChevronLeft size={24} color={COLORS.primary} style={{ transform: [{ rotate: '180deg' }] }} />
                 </TouchableOpacity>
 
-                {/* Grid Actions */}
+                {}
                 <View style={styles.actionGrid}>
                     {[
                         { icon: UserCircle, label: t('payContacts') || 'Pay contacts', color: '#1A73E8' },
@@ -185,7 +185,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                     ))}
                 </View>
 
-                {/* People Horizontal List */}
+                {}
                 <View style={styles.section}>
                     <Text style={styles.sectionHeader}>{t('people') || 'People'}</Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.avatarList}>
@@ -198,7 +198,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                     </ScrollView>
                 </View>
 
-                {/* Businesses */}
+                {}
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderRow}>
                         <Text style={styles.sectionHeader}>{t('businesses') || 'Businesses'}</Text>
@@ -214,7 +214,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                     </ScrollView>
                 </View>
 
-                {/* Bills */}
+                {}
                 <View style={styles.section}>
                     <Text style={styles.sectionHeader}>{t('billsRecharges') || 'Bills & Recharges'}</Text>
                     <View style={styles.billGrid}>
@@ -241,7 +241,7 @@ export default function UPISimulationScreen({ navigation, route }) {
         <View style={styles.fullScreenBlack}>
             <StatusBar barStyle="light-content" backgroundColor="#000" />
 
-            {/* Real Camera View */}
+            {}
             {device && hasCamPermission ? (
                 <Camera
                     style={StyleSheet.absoluteFill}
@@ -272,7 +272,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                     <View style={styles.scanCornerBL} />
                     <View style={styles.scanCornerBR} />
 
-                    {/* Fallback mock scan if you can't scan a real screen during simulation */}
+                    {}
                     <TouchableOpacity style={styles.triggerMockScanBtn} onPress={handleMockScan}>
                         <Text style={styles.triggerMockScanText}>{t('tapToScanMock') || 'Tap if you have no physical QR'}</Text>
                     </TouchableOpacity>
@@ -343,7 +343,7 @@ export default function UPISimulationScreen({ navigation, route }) {
         <SafeAreaView style={styles.npciPinScreen}>
             <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-            {/* Top Header */}
+            {}
             <View style={styles.npciBankHeaderRow}>
                 <View>
                     <Text style={styles.npciBankName}>Bank {t('stateBankOfIndia') || 'State Bank of India'}</Text>
@@ -355,7 +355,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                 </View>
             </View>
 
-            {/* To and Sending Info */}
+            {}
             <View style={styles.npciPayeeBox}>
                 <View style={styles.npciPayeeRow}>
                     <Text style={styles.npciLabelText}>{t('to') || 'To'}:</Text>
@@ -370,7 +370,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                 </View>
             </View>
 
-            {/* Middle PIN area */}
+            {}
             <View style={styles.npciMiddleBox}>
                 <Text style={styles.npciPinInstruction}>{t('enter6DigitUpiPin') || 'ENTER 6-DIGIT UPI PIN'}</Text>
                 <View style={styles.npciDotsRow}>
@@ -405,7 +405,7 @@ export default function UPISimulationScreen({ navigation, route }) {
                 </View>
             </View>
 
-            {/* Numpad */}
+            {}
             <View style={styles.npciKeyboard}>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
                     <TouchableOpacity key={n} style={styles.npciKey} onPress={() => pin.length < 6 && setPin(pin + n)}>

@@ -45,7 +45,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                     IconComponent = User;
                 }
 
-                const color = '#000000'; // Always black as requested
+                const color = '#000000';
 
                 return (
                     <TouchableOpacity
@@ -107,12 +107,12 @@ const styles = StyleSheet.create({
     iconContainer: {
         paddingVertical: 10,
         paddingHorizontal: 24,
-        borderRadius: 30, // pill shape
+        borderRadius: 30,
     },
     activeIconContainer: {
         backgroundColor: '#e5e6e8ff',
         borderRadius: 30,
         width: 100,
-        alignItems: 'center',// pill shape// Light red transparent background for active state
+        alignItems: 'center',
     }
 });

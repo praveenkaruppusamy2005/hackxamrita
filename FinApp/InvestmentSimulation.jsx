@@ -33,30 +33,30 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useLanguage } from './LanguageContext';
 
-// Note: LayoutAnimation is not needed in New Architecture
-// Removed UIManager.setLayoutAnimationEnabledExperimental
+
+
 
 const { width } = Dimensions.get('window');
 
 const COLORS = {
     background: '#F8FAFC',
     surface: '#FFFFFF',
-    primary: '#0F172A',   // Slate 900
-    accent: '#3B82F6',    // Blue 500
+    primary: '#0F172A',
+    accent: '#3B82F6',
     accentLight: '#EFF6FF',
-    secondary: '#64748B', // Slate 500
-    text: '#1E293B',      // Slate 800
-    border: '#E2E8F0',    // Slate 200
-    success: '#10B981',   // Emerald 500
-    danger: '#EF4444',    // Red 500
-    warning: '#F59E0B',   // Amber 500
+    secondary: '#64748B',
+    text: '#1E293B',
+    border: '#E2E8F0',
+    success: '#10B981',
+    danger: '#EF4444',
+    warning: '#F59E0B',
 
-    // Investment Specific Colors
-    fd: '#0D9488',        // Teal 600
-    gold: '#D97706',      // Amber 600
-    mf: '#4F46E5',        // Indigo 600
-    bonds: '#0284C7',     // Sky 600
-    chit: '#DB2777',      // Pink 600
+
+    fd: '#0D9488',
+    gold: '#D97706',
+    mf: '#4F46E5',
+    bonds: '#0284C7',
+    chit: '#DB2777',
 };
 
 const INVESTMENTS_DATA = {
@@ -135,7 +135,7 @@ export default function InvestmentSimulation({ navigation }) {
     const [detailsModal, setDetailsModal] = useState(null);
     const [compareModal, setCompareModal] = useState(false);
 
-    // Animation values
+
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -153,7 +153,7 @@ export default function InvestmentSimulation({ navigation }) {
         Object.values(INVESTMENTS_DATA).forEach(inv => {
             const i = inv.rate / 12;
             const n = years * 12;
-            // Compound Interest Formula for SIP: FV = P * ([(1 + i)^n - 1] / i) * (1 + i)
+
             const fv = monthlySavings * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
             data[inv.id] = Math.round(fv);
             if (data[inv.id] > maxVal) maxVal = data[inv.id];
@@ -193,7 +193,7 @@ export default function InvestmentSimulation({ navigation }) {
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.surface} />
 
-            {/* Header */}
+            {}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
                     <ChevronLeft color={COLORS.primary} size={28} />
@@ -206,7 +206,7 @@ export default function InvestmentSimulation({ navigation }) {
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
-                {/* Hero Visualization */}
+                {}
                 <Animated.View style={[styles.heroCard, { opacity: fadeAnim }]}>
                     <LinearGradient
                         colors={['#1E293B', '#0F172A']}
@@ -227,7 +227,7 @@ export default function InvestmentSimulation({ navigation }) {
                             </View>
                         </View>
 
-                        {/* Mini Chart Mock */}
+                        {}
                         <View style={styles.chartContainer}>
                             {[0.2, 0.4, 0.3, 0.6, 0.5, 0.8, 0.7, 1.0].map((h, idx) => (
                                 <View key={idx} style={[styles.chartBar, { height: 40 * h, opacity: 0.3 + (h * 0.7) }]} />
@@ -236,7 +236,7 @@ export default function InvestmentSimulation({ navigation }) {
                     </LinearGradient>
                 </Animated.View>
 
-                {/* Controls */}
+                {}
                 <View style={styles.controlsCard}>
                     <View style={styles.controlRow}>
                         <View style={styles.controlHeader}>
@@ -321,7 +321,7 @@ export default function InvestmentSimulation({ navigation }) {
                                 </View>
                             </View>
 
-                            {/* Progress Bar */}
+                            {}
                             <View style={styles.progressContainer}>
                                 <LinearGradient
                                     colors={[inv.color, `${inv.color}DD`]}
@@ -335,7 +335,7 @@ export default function InvestmentSimulation({ navigation }) {
                 })}
             </ScrollView>
 
-            {/* Compare FAB */}
+            {}
             {selectedItems.size >= 2 && (
                 <View style={styles.fabContainer}>
                     <TouchableOpacity style={styles.fab} onPress={() => setCompareModal(true)}>
@@ -345,7 +345,7 @@ export default function InvestmentSimulation({ navigation }) {
                 </View>
             )}
 
-            {/* Details Modal */}
+            {}
             <Modal visible={!!detailsModal} transparent animationType="slide">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
@@ -406,7 +406,7 @@ export default function InvestmentSimulation({ navigation }) {
                 </View>
             </Modal>
 
-            {/* Compare Modal */}
+            {}
             <Modal visible={compareModal} transparent animationType="slide">
                 <View style={styles.modalOverlay}>
                     <View style={[styles.modalContent, { height: '70%', paddingBottom: 0 }]}>
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     infoBtn: { padding: 4 },
     scrollContent: { padding: 20, paddingBottom: 100 },
 
-    // Hero Section
+
     heroCard: {
         borderRadius: 24,
         overflow: 'hidden',
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     chartContainer: { flexDirection: 'row', alignItems: 'flex-end', gap: 6, marginTop: 20 },
     chartBar: { width: 12, backgroundColor: '#FFF', borderRadius: 6 },
 
-    // Controls
+
     controlsCard: { backgroundColor: '#F1F5F9', padding: 24, borderRadius: 24, marginBottom: 30 },
     controlRow: {},
     controlHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 12 },
@@ -503,12 +503,12 @@ const styles = StyleSheet.create({
     controlValue: { fontSize: 20, fontWeight: '700', color: COLORS.primary },
     slider: { width: '100%', height: 40 },
 
-    // Section Header
+
     sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16 },
     sectionTitle: { fontSize: 18, fontWeight: '800', color: COLORS.primary },
     sectionSub: { fontSize: 12, color: COLORS.secondary },
 
-    // Cards
+
     invCard: {
         backgroundColor: COLORS.surface,
         borderRadius: 16,
@@ -520,19 +520,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.08,
         shadowRadius: 8,
     },
-    invTop: { 
-        flexDirection: 'row', 
-        alignItems: 'center', 
+    invTop: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 12,
         gap: 12,
     },
-    invInfo: { 
+    invInfo: {
         flex: 1,
     },
-    invName: { 
-        fontSize: 15, 
-        fontWeight: '700', 
-        color: COLORS.primary, 
+    invName: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: COLORS.primary,
         marginBottom: 6,
     },
     invMeta: {
@@ -540,23 +540,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 6,
     },
-    riskBadge: { 
-        flexDirection: 'row', 
+    riskBadge: {
+        flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 8,
         paddingVertical: 3,
         borderRadius: 8,
     },
-    riskDot: { 
-        width: 5, 
-        height: 5, 
-        borderRadius: 3, 
+    riskDot: {
+        width: 5,
+        height: 5,
+        borderRadius: 3,
         marginRight: 4,
     },
-    riskText: { 
-        fontSize: 10, 
-        fontWeight: '700', 
-        textTransform: 'uppercase', 
+    riskText: {
+        fontSize: 10,
+        fontWeight: '700',
+        textTransform: 'uppercase',
         letterSpacing: 0.3,
     },
     returnBadge: {
@@ -569,30 +569,30 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         letterSpacing: 0.2,
     },
-    invRight: { 
+    invRight: {
         alignItems: 'flex-end',
         gap: 6,
     },
-    invAmount: { 
-        fontSize: 16, 
-        fontWeight: '900', 
+    invAmount: {
+        fontSize: 16,
+        fontWeight: '900',
         color: COLORS.primary,
     },
-    progressContainer: { 
-        height: 5, 
-        backgroundColor: '#F1F5F9', 
-        borderRadius: 3, 
+    progressContainer: {
+        height: 5,
+        backgroundColor: '#F1F5F9',
+        borderRadius: 3,
         overflow: 'hidden',
     },
-    progressBar: { 
-        height: '100%', 
+    progressBar: {
+        height: '100%',
         borderRadius: 3,
     },
-    checkCircle: { 
-        width: 24, 
-        height: 24, 
-        borderRadius: 12, 
-        justifyContent: 'center', 
+    checkCircle: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        justifyContent: 'center',
         alignItems: 'center',
         elevation: 3,
         shadowColor: '#000',
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
     },
 
-    // FAB
+
     fabContainer: { position: 'absolute', bottom: 30, left: 0, right: 0, alignItems: 'center' },
     fab: {
         flexDirection: 'row',
@@ -618,7 +618,7 @@ const styles = StyleSheet.create({
     },
     fabText: { color: '#FFFFFF', fontWeight: '800', fontSize: 15, marginLeft: 10 },
 
-    // Modal
+
     modalOverlay: { flex: 1, backgroundColor: 'rgba(15,23,42,0.8)', justifyContent: 'flex-end' },
     modalContent: { backgroundColor: COLORS.surface, borderTopLeftRadius: 32, borderTopRightRadius: 32, padding: 24, maxHeight: '90%' },
     modalHandle: { width: 40, height: 5, backgroundColor: COLORS.border, borderRadius: 3, alignSelf: 'center', marginBottom: 12 },
@@ -641,11 +641,11 @@ const styles = StyleSheet.create({
     actionBtn: { paddingVertical: 18, borderRadius: 20, alignItems: 'center' },
     actionBtnText: { color: '#FFF', fontWeight: '800', fontSize: 16 },
 
-    // Comparison
-    modalHeaderCompact: { 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
+
+    modalHeaderCompact: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 24,
         paddingBottom: 16,
         borderBottomWidth: 2,
@@ -654,16 +654,16 @@ const styles = StyleSheet.create({
     compareTitle: { fontSize: 22, fontWeight: '900', color: COLORS.primary },
     compareScroll: { marginHorizontal: -24, marginBottom: 20 },
     compareWrapper: { flexDirection: 'row', paddingHorizontal: 24 },
-    compareLabelsCol: { 
-        width: 110, 
+    compareLabelsCol: {
+        width: 110,
         paddingRight: 12,
         backgroundColor: '#F8FAFC',
         borderRadius: 16,
         padding: 12,
     },
-    compareDataCol: { 
-        width: 150, 
-        alignItems: 'center', 
+    compareDataCol: {
+        width: 150,
+        alignItems: 'center',
         backgroundColor: COLORS.surface,
         borderRadius: 16,
         padding: 12,
@@ -676,28 +676,28 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 4,
     },
-    compareHeaderLabel: { 
-        fontSize: 12, 
-        fontWeight: '800', 
-        color: COLORS.primary, 
-        height: 70, 
+    compareHeaderLabel: {
+        fontSize: 12,
+        fontWeight: '800',
+        color: COLORS.primary,
+        height: 70,
         textAlignVertical: 'center',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
     },
-    compareLabel: { 
-        height: 56, 
-        fontSize: 14, 
-        color: COLORS.text, 
-        fontWeight: '700', 
+    compareLabel: {
+        height: 56,
+        fontSize: 14,
+        color: COLORS.text,
+        fontWeight: '700',
         textAlignVertical: 'center',
         paddingVertical: 8,
     },
-    compareIconBox: { 
-        width: 48, 
-        height: 48, 
-        borderRadius: 24, 
-        justifyContent: 'center', 
+    compareIconBox: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        justifyContent: 'center',
         alignItems: 'center',
         elevation: 3,
         shadowColor: '#000',
@@ -705,20 +705,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 4,
     },
-    compareName: { 
-        fontSize: 14, 
-        fontWeight: '900', 
-        color: COLORS.primary, 
-        marginTop: 10, 
-        height: 44, 
+    compareName: {
+        fontSize: 14,
+        fontWeight: '900',
+        color: COLORS.primary,
+        marginTop: 10,
+        height: 44,
         textAlign: 'center',
         lineHeight: 18,
     },
-    compareVal: { 
-        height: 56, 
-        fontSize: 15, 
-        color: COLORS.text, 
-        fontWeight: '700', 
+    compareVal: {
+        height: 56,
+        fontSize: 15,
+        color: COLORS.text,
+        fontWeight: '700',
         textAlignVertical: 'center',
         paddingVertical: 8,
     },
@@ -730,12 +730,12 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginVertical: 4,
     },
-    compareCloseBtn: { 
-        marginHorizontal: 24, 
+    compareCloseBtn: {
+        marginHorizontal: 24,
         marginBottom: 24,
-        backgroundColor: COLORS.primary, 
-        paddingVertical: 18, 
-        borderRadius: 20, 
+        backgroundColor: COLORS.primary,
+        paddingVertical: 18,
+        borderRadius: 20,
         alignItems: 'center',
         elevation: 4,
         shadowColor: COLORS.primary,

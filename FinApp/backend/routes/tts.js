@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/speak', async (req, res) => {
-    const { text, voiceId = 'pNInz6obpgH9P39Pue6S' } = req.body; // Default: 'Rachel' or any premium voice
+    const { text, voiceId = 'pNInz6obpgH9P39Pue6S' } = req.body;
 
     if (!text) {
         return res.status(400).json({ error: 'Text is required' });
