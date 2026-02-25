@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+tts_cache/
+*.log
+*.log2
+models.txt
+.vscode/
