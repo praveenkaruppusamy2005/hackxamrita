@@ -54,7 +54,7 @@ def route_intent(transcript: str, state: dict = None) -> dict:
         print(f"[AI] Routing error: {e}")
         return {"intent": "faq"}
 
-def generate_faq_response(transcript: str) -> str:
+def generate_faq_response(transcript: str, lang_code: str = "en") -> str:
     """
     Generates a fallback conversational response for FAQs.
     """
@@ -65,6 +65,7 @@ def generate_faq_response(transcript: str) -> str:
     You are a polite, helpful financial support assistant.
     Keep your answer concise (1 to 2 sentences max) because it will be spoken over the phone.
     You cannot access account data.
+    Respond in the language specified by the lang code '{lang_code}'.
     User asked: "{transcript}"
     """
     try:
@@ -73,3 +74,29 @@ def generate_faq_response(transcript: str) -> str:
     except Exception as e:
         print(f"[AI] FAQ generation error: {e}")
         return "I'm sorry, I cannot process your request right now."
+
+def generate_translated_reply(english_text: str, lang_code: str) -> str:
+    """
+    Translates English system prompts into the target language naturally.
+    """
+    if lang_code == "en" or not is_ai_ready():
+        return english_text
+        
+    lang_map = {"hi": "Hindi", "ta": "Tamil", "te": "Telugu"}
+    target_lang = lang_map.get(lang_code, "English")
+    
+    prompt = f"""
+    You are the voice of a banking assistant. 
+    Translate the following English prompt into natural, conversational {target_lang}.
+    Keep it concise and appropriate for spoken audio.
+    
+    English text to translate: "{english_text}"
+    
+    Respond ONLY with the translated text, no quotes or markdown.
+    """
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"[AI] Translation error: {e}")
+        return english_text

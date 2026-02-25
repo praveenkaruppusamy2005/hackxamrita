@@ -163,7 +163,7 @@ def voice():
         action="/lang_select",
         timeout=10
     )
-    gather.say("Welcome to . For English, press 1. For Hindi, press 2. For Tamil, press 3. For Telugu, press 4.")
+    gather.say("Welcome to Fin-App. For English, press 1. For Hindi, press 2. For Tamil, press 3. For Telugu, press 4.")
     response.redirect("/voice")
     return Response(str(response), mimetype='text/xml')
 
@@ -250,7 +250,8 @@ def process_banking():
     response = VoiceResponse()
 
     if not text:
-        play_tts(response, "I didn't hear anything. Goodbye.", lang_code)
+        reply = ai_router.generate_translated_reply("I didn't hear anything. Goodbye.", lang_code)
+        play_tts(response, reply, lang_code)
         response.hangup()
         return Response(str(response), mimetype='text/xml')
 
@@ -270,14 +271,16 @@ def process_banking():
         
         if intent == "end_conversation":
             session.pop("pending_intent", None)
-            play_tts(response, "Thank you for banking with us. Goodbye!", lang_code)
+            reply = ai_router.generate_translated_reply("Thank you for banking with us. Goodbye!", lang_code)
+            play_tts(response, reply, lang_code)
             response.hangup()
             return Response(str(response), mimetype='text/xml')
             
         elif intent == "check_balance":
             session.pop("pending_intent", None)
             balance = db.get_balance(phone)
-            reply = f"Your current balance is {balance} rupees. What else can I do for you?"
+            reply_en = f"Your current balance is {balance} rupees. What else can I do for you?"
+            reply = ai_router.generate_translated_reply(reply_en, lang_code)
             
         elif intent == "transfer_money":
             amount = intent_data.get("amount") or session.get("pending_amount")
@@ -293,7 +296,9 @@ def process_banking():
                 
                 # Route to PIN confirmation instead of directly executing!
                 gather = response.gather(num_digits=4, action="/execute_transfer", timeout=10)
-                play_tts(gather, f"To securely confirm your transfer of {amount} rupees to {recipient}, please enter your four digit PIN on the keypad.", lang_code)
+                reply_en = f"To securely confirm your transfer of {amount} rupees to {recipient}, please enter your four digit PIN on the keypad."
+                prompt = ai_router.generate_translated_reply(reply_en, lang_code)
+                play_tts(gather, prompt, lang_code)
                 return Response(str(response), mimetype='text/xml')
             else:
                 session['pending_intent'] = "transfer_money"
@@ -301,11 +306,13 @@ def process_banking():
                 if recipient: session['pending_recipient'] = recipient
                 
                 if not amount and not recipient:
-                    reply = "Sure, who would you like to transfer money to, and how much?"
+                    reply_en = "Sure, who would you like to transfer money to, and how much?"
                 elif not amount:
-                    reply = f"Got it. How much would you like to send to {recipient}?"
+                    reply_en = f"Got it. How much would you like to send to {recipient}?"
                 elif not recipient:
-                    reply = f"Sure. Who are we sending {amount} rupees to?"
+                    reply_en = f"Sure. Who are we sending {amount} rupees to?"
+                    
+                reply = ai_router.generate_translated_reply(reply_en, lang_code)
                 
         else:
             session.pop("pending_intent", None)
@@ -345,9 +352,11 @@ def execute_transfer():
     # Re-verify the PIN for the transaction
     if db.authenticate_user(phone, pin):
         result = db.transfer_funds(phone, recipient, amount)
-        reply = result["message"] + " What else can I do for you?"
+        reply_en = result["message"] + " What else can I do for you?"
     else:
-        reply = "Incorrect PIN. Transfer cancelled. What else can I do for you?"
+        reply_en = "Incorrect PIN. Transfer cancelled. What else can I do for you?"
+        
+    reply = ai_router.generate_translated_reply(reply_en, lang_code)
         
     # Drop them back into the interactive conversational loop
     gather = response.gather(
