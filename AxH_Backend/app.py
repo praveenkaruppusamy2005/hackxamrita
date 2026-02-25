@@ -321,7 +321,7 @@ def process_banking():
         else:
             session.pop("pending_intent", None)
             # Fallback to Gemini for FAQ
-            reply = ai_router.generate_faq_response(text)
+            reply = ai_router.generate_faq_response(text, lang_code=lang_code)
             
         # Interactive loop: We append the reply inside a Gather so they can immediately reply!
         gather = response.gather(
@@ -335,7 +335,8 @@ def process_banking():
         
     except Exception as e:
         print(f"[PROCESS] Error: {e}")
-        play_tts(response, "Something went wrong. Please try again.", lang_code)
+        error_msg = ai_router.generate_translated_reply("Something went wrong. Please try again.", lang_code)
+        play_tts(response, error_msg, lang_code)
 
     # If they are silent for the gather timeout, hang up instead of looping!
     response.hangup()
