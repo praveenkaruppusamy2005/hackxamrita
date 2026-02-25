@@ -159,12 +159,29 @@ def voice():
         return Response(str(response), mimetype='text/xml')
 
     gather = response.gather(
+        num_digits=1,
+        action="/lang_select",
+        timeout=10
+    )
+    gather.say("Welcome to Secure Banking. For English, press 1. For Hindi, press 2. For Tamil, press 3. For Telugu, press 4.")
+    response.redirect("/voice")
+    return Response(str(response), mimetype='text/xml')
+
+@app.route("/lang_select", methods=["POST", "GET"])
+def lang_select():
+    digit = request.values.get("Digits", "1")
+    lang_info = LANG_MAP.get(digit, ("en", "English"))
+    lang_code = lang_info[0]
+    session['lang'] = lang_code
+    
+    response = VoiceResponse()
+    gather = response.gather(
         num_digits=4,
         action="/auth",
         timeout=10
     )
-    gather.say("Welcome to Secure Banking. Please enter your four digit PIN on the keypad.")
-    response.redirect("/voice")
+    play_tts(gather, "Please enter your four digit PIN on the keypad.", lang_code)
+    response.redirect(f"/lang_select?Digits={digit}")
     return Response(str(response), mimetype='text/xml')
 
 # ── Route 2: Handle Auth and Send to Menu ────────────────────────────────────
@@ -173,17 +190,19 @@ def voice():
 def auth():
     pin = request.values.get("Digits", "")
     phone = request.values.get("From", "+15642344613") # Twilio sends this internally.
+    lang_code = session.get('lang', 'en')
     
     response = VoiceResponse()
     
     if db.authenticate_user(phone, pin):
         session['authenticated'] = True
         session['phone'] = phone
-        response.say("Authentication successful.")
+        play_tts(response, "Authentication successful.", lang_code)
         response.redirect("/menu")
     else:
-        response.say("Incorrect PIN.")
-        response.redirect("/voice")
+        play_tts(response, "Incorrect PIN.", lang_code)
+        # Give them another chance (redirect back to PIN gather)
+        response.redirect("/lang_select?Digits=" + next((k for k, v in LANG_MAP.items() if v[0] == lang_code), "1"))
         
     return Response(str(response), mimetype='text/xml')
 
@@ -197,7 +216,7 @@ def menu():
         return Response(str(response), mimetype='text/xml')
 
     response = VoiceResponse()
-    lang_code = "en"
+    lang_code = session.get('lang', 'en')
     
     # We use Gather with input="speech" to get real-time transcription from Twilio
     # This completely eliminates the 3-5 second delay of recording, downloading, and translating!
@@ -206,7 +225,7 @@ def menu():
         action=f"/process_banking?lang={lang_code}",
         timeout=3,
         speech_timeout="auto",
-        language="en-IN"
+        language=f"{lang_code}-IN"
     )
     # The TTS prompt plays *while* Twilio is listening, making it ultra-fast
     play_tts(gather, "How can I help you today?", lang_code)
@@ -225,7 +244,7 @@ def process_banking():
         return Response(str(response), mimetype='text/xml')
 
     text = request.values.get("SpeechResult", "").strip()
-    lang_code = request.args.get("lang", "en")
+    lang_code = session.get('lang', 'en')
     phone = session.get("phone")
 
     response = VoiceResponse()
@@ -277,7 +296,7 @@ def process_banking():
             action=f"/process_banking?lang={lang_code}",
             timeout=3,
             speech_timeout="auto",
-            language="en-IN"
+            language=f"{lang_code}-IN"
         )
         play_tts(gather, reply, lang_code)
         
@@ -297,7 +316,7 @@ def execute_transfer():
     phone = session.get("phone")
     amount = float(session.get("transfer_amount", 0))
     recipient = session.get("transfer_recipient", "")
-    lang_code = "en"
+    lang_code = session.get('lang', 'en')
     
     response = VoiceResponse()
     
@@ -314,7 +333,7 @@ def execute_transfer():
         action=f"/process_banking?lang={lang_code}",
         timeout=3,
         speech_timeout="auto",
-        language="en-IN"
+        language=f"{lang_code}-IN"
     )
     play_tts(gather, reply, lang_code)
     
