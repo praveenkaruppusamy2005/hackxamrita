@@ -1,71 +1,119 @@
-# FinApp - Digital Munshi 🚀
+# FinApp
 
-Digital Munshi is a powerful, AI-driven financial literacy and management application built with **React Native**. It aims to simplify financial concepts and provide interactive tools for users to manage their finances, learn about government schemes, and simulate real-world financial transactions.
+FinApp is a powerful, AI-driven financial literacy and management application built with React Native. It simplifies financial concepts and provides interactive tools for users to manage their finances, learn about government schemes, and simulate real-world financial transactions.
 
-## ✨ Features
+---
 
-- **🤖 AI Voice Assistant**: Integrated with **ElevenLabs Agent** for a natural, voice-driven interaction experience.
-- **💰 Financial Simulations**:
-    - **UPI Payment Simulation**: Practice digital payments in a safe environment.
-    - **Net Banking Simulation**: Learn how to navigate online banking portals.
-    - **Investment Simulation**: Explore different investment options and their potential returns.
-- **📜 Govt Schemes**: Real-time information on various government schemes to help users access relevant financial aid.
-- **🏦 Loan Eligibility**: A built-in calculator to check loan eligibility based on user profile.
-- **🌐 Multilingual Support**: Accessible in both **English** and **Tamil** to cater to a wider audience.
-- **🔒 Secure Onboarding**: Multi-step onboarding process with **AES-256 encryption** for sensitive user data.
-- **📊 Interactive Dashboard**: A sleek, modern dashboard (Digital Munshi) to track expenses and financial goals.
+## Features
 
-## 🛠️ Tech Stack
+### AI Voice Assistant
 
-- **Frontend**: React Native, React Navigation, Lucide React Native, HugeIcons.
-- **Backend**: Express.js, Node.js.
-- **Database**: MongoDB.
-- **AI/ML**: ElevenLabs Conversational AI, Google Generative AI (Gemini).
-- **Services**: AWS Translate (for dynamic translations), AES-256 encryption.
+Integrated with ElevenLabs Agent for a natural, voice-driven interaction experience.
 
-## 🚀 Getting Started
+### Financial Simulations
+
+* UPI Payment Simulation – Practice digital payments in a safe environment.
+* Net Banking Simulation – Learn how to navigate online banking portals.
+* Investment Simulation – Explore different investment options and their potential returns.
+
+### Government Schemes
+
+Real-time information on various government schemes to help users access relevant financial aid.
+
+### Loan Eligibility
+
+A built-in calculator to check loan eligibility based on user profile details.
+
+### Multilingual Support
+
+Accessible in both English and Tamil to cater to a wider audience.
+
+### Secure Onboarding
+
+Multi-step onboarding process with AES-256 encryption for sensitive user data.
+
+### Interactive Dashboard
+
+A modern dashboard to track expenses and financial goals.
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React Native
+* React Navigation
+* Lucide React Native
+* HugeIcons
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB
+
+### AI / ML
+
+* ElevenLabs Conversational AI
+* Google Generative AI (Gemini)
+
+### Services
+
+* AWS Translate (for dynamic translations)
+* AES-256 encryption
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (>= 22.11.0)
-- React Native CLI
-- Android Studio / Xcode
+* Node.js (>= 22.11.0)
+* React Native CLI
+* Android Studio or Xcode
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-2. Install dependencies:
-   ```bash
-   cd FinApp
-   npm install
-   ```
-3. Set up environment variables:
-   Create a `.env` file in the `FinApp` directory and add your API keys (ElevenLabs, AWS, Google AI).
+Clone the repository:
 
-4. Run the application:
-   ```bash
-   # For Android
-   npm run android
+```bash
+git clone <repository-url>
+```
 
-   # For iOS
-   npm run ios
-   ```
+Install dependencies:
 
-## 📂 Project Structure
+```bash
+cd FinApp
+npm install
+```
 
-- `FinApp/`: Main React Native application.
-    - `backend/`: Node.js server and API routes.
-    - `screens/`: UI screens for various features.
-    - `services/`: API integration and utility services.
-- `.git/`: Git repository configuration.
+Set up environment variables:
 
-## 🤝 Contributing
+Create a `.env` file in the `FinApp` directory and add your API keys (ElevenLabs, AWS, Google AI).
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Run the application:
 
-## 📄 License
+```bash
+# For Android
+npm run android
 
-This project is licensed under the MIT License.
+# For iOS
+npm run ios
+```
+
+---
+
+## Project Structure
+
+```
+FinApp/
+│
+├── backend/      # Node.js server and API routes
+├── screens/      # UI screens for various features
+├── services/     # API integration and utility services
+└── .git/         # Git repository configuration
+```
