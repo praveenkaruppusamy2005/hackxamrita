@@ -180,7 +180,8 @@ def lang_select():
         action="/auth",
         timeout=10
     )
-    play_tts(gather, "Please enter your four digit PIN on the keypad.", lang_code)
+    prompt = ai_router.generate_translated_reply("Please enter your four digit PIN on the keypad.", lang_code)
+    play_tts(gather, prompt, lang_code)
     response.redirect(f"/lang_select?Digits={digit}")
     return Response(str(response), mimetype='text/xml')
 
@@ -197,10 +198,12 @@ def auth():
     if db.authenticate_user(phone, pin):
         session['authenticated'] = True
         session['phone'] = phone
-        play_tts(response, "Authentication successful.", lang_code)
+        prompt = ai_router.generate_translated_reply("Authentication successful.", lang_code)
+        play_tts(response, prompt, lang_code)
         response.redirect("/menu")
     else:
-        play_tts(response, "Incorrect PIN.", lang_code)
+        prompt = ai_router.generate_translated_reply("Incorrect PIN.", lang_code)
+        play_tts(response, prompt, lang_code)
         # Give them another chance (redirect back to PIN gather)
         response.redirect("/lang_select?Digits=" + next((k for k, v in LANG_MAP.items() if v[0] == lang_code), "1"))
         
@@ -228,7 +231,8 @@ def menu():
         language=f"{lang_code}-IN"
     )
     # The TTS prompt plays *while* Twilio is listening, making it ultra-fast
-    play_tts(gather, "How can I help you today?", lang_code)
+    prompt = ai_router.generate_translated_reply("How can I help you today?", lang_code)
+    play_tts(gather, prompt, lang_code)
 
     # If the user doesn't say anything, loop back
     response.redirect("/menu")
