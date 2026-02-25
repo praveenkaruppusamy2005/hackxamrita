@@ -16,12 +16,16 @@ if GEMINI_API_KEY:
 def is_ai_ready():
     return model is not None
 
-def route_intent(transcript: str) -> dict:
+def route_intent(transcript: str, state: dict = None) -> dict:
     """
     Returns JSON with intent: 'check_balance', 'transfer_money', or 'faq'
     """
     if not is_ai_ready():
         return {"intent": "faq"}
+        
+    state_str = ""
+    if state and state.get("pending_intent"):
+        state_str = f"The user is currently in the middle of a {state.get('pending_intent')} flow. They were previously asked for missing information (amount: {state.get('pending_amount')}, recipient: {state.get('pending_recipient')}). Interpret their response in this context."
         
     prompt = f"""
     You are an intent classifier for a voice banking assistant.
@@ -29,9 +33,11 @@ def route_intent(transcript: str) -> dict:
     
     Determine the user's intent from these options:
     1. check_balance (e.g., "what is my balance", "check balance")
-    2. transfer_money (e.g., "transfer 500 to Ramesh", "send 1000 rupees to John")
+    2. transfer_money (e.g., "transfer 500 to Ramesh", "send 1000 rupees to John", or just "500" or "John" if in context)
     3. end_conversation (e.g., "goodbye", "bye", "thanks that is all", "no", "end call")
     4. faq (e.g., "how to improve savings", "what is an EMI", or unclear)
+    
+    {state_str}
     
     Respond ONLY in strictly valid JSON format, with no markdown formatting:
     {{

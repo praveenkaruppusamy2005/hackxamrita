@@ -163,7 +163,7 @@ def voice():
         action="/lang_select",
         timeout=10
     )
-    gather.say("Welcome to Secure Banking. For English, press 1. For Hindi, press 2. For Tamil, press 3. For Telugu, press 4.")
+    gather.say("Welcome to . For English, press 1. For Hindi, press 2. For Tamil, press 3. For Telugu, press 4.")
     response.redirect("/voice")
     return Response(str(response), mimetype='text/xml')
 
@@ -258,35 +258,57 @@ def process_banking():
 
     try:
         # === BANKING ROUTING LOGIC ===
-        intent_data = ai_router.route_intent(text)
+        state = {
+            "pending_intent": session.get("pending_intent"),
+            "pending_amount": session.get("pending_amount"),
+            "pending_recipient": session.get("pending_recipient")
+        }
+        intent_data = ai_router.route_intent(text, state)
         intent = intent_data.get("intent")
         
         print(f"[ROUTER] Intent detected: {intent}")
         
         if intent == "end_conversation":
+            session.pop("pending_intent", None)
             play_tts(response, "Thank you for banking with us. Goodbye!", lang_code)
             response.hangup()
             return Response(str(response), mimetype='text/xml')
             
         elif intent == "check_balance":
+            session.pop("pending_intent", None)
             balance = db.get_balance(phone)
             reply = f"Your current balance is {balance} rupees. What else can I do for you?"
             
         elif intent == "transfer_money":
-            amount = intent_data.get("amount")
-            recipient = intent_data.get("recipient")
+            amount = intent_data.get("amount") or session.get("pending_amount")
+            recipient = intent_data.get("recipient") or session.get("pending_recipient")
             
             if amount and recipient:
                 session['transfer_amount'] = amount
                 session['transfer_recipient'] = recipient
+                # clear pending
+                session.pop("pending_amount", None)
+                session.pop("pending_recipient", None)
+                session.pop("pending_intent", None)
+                
                 # Route to PIN confirmation instead of directly executing!
                 gather = response.gather(num_digits=4, action="/execute_transfer", timeout=10)
                 play_tts(gather, f"To securely confirm your transfer of {amount} rupees to {recipient}, please enter your four digit PIN on the keypad.", lang_code)
                 return Response(str(response), mimetype='text/xml')
             else:
-                reply = "I couldn't understand the transfer amount or the recipient. Please try again."
+                session['pending_intent'] = "transfer_money"
+                if amount: session['pending_amount'] = amount
+                if recipient: session['pending_recipient'] = recipient
+                
+                if not amount and not recipient:
+                    reply = "Sure, who would you like to transfer money to, and how much?"
+                elif not amount:
+                    reply = f"Got it. How much would you like to send to {recipient}?"
+                elif not recipient:
+                    reply = f"Sure. Who are we sending {amount} rupees to?"
                 
         else:
+            session.pop("pending_intent", None)
             # Fallback to Gemini for FAQ
             reply = ai_router.generate_faq_response(text)
             
