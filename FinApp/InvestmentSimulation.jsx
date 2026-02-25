@@ -33,10 +33,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useLanguage } from './LanguageContext';
 
-// Enable LayoutAnimation for Android
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+// Note: LayoutAnimation is not needed in New Architecture
+// Removed UIManager.setLayoutAnimationEnabledExperimental
 
 const { width } = Dimensions.get('window');
 

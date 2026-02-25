@@ -3,6 +3,9 @@
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.RECOGNIZE_SPEECH" />
+        </intent>
         <package android:name="com.google.android.googlequicksearchbox" />
         <package android:name="com.samsung.android.bixby.agent" />
         <package android:name="com.huawei.vassistant" />

@@ -23,23 +23,16 @@ export default function HomeScreen({ navigation }) {
 
     const getGreeting = () => {
         const hour = new Date().getHours();
-        if (hour < 12) return t('goodMorning');
-        if (hour < 17) return t('goodAfternoon');
-        if (hour < 21) return t('goodEvening');
-        return t('goodNight');
+        if (hour < 12) return t('goodMorning') || 'Good Morning';
+        if (hour < 17) return t('goodAfternoon') || 'Good Afternoon';
+        if (hour < 21) return t('goodEvening') || 'Good Evening';
+        return t('goodNight') || 'Good Night';
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <View style={styles.header}>
-                    {isTranslating ? (
-                        <Skeleton width={120} height={20} style={{ marginBottom: 4 }} />
-                    ) : (
-                        <Text style={styles.greeting}>{getGreeting()}</Text>
-                    )}
-                    <Text style={styles.userName}>Praveen</Text>
-                </View>
+
 
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                     {/* 4 Cards Grid */}
@@ -60,7 +53,7 @@ export default function HomeScreen({ navigation }) {
                                     {isTranslating ? (
                                         <Skeleton width={100} height={16} />
                                     ) : (
-                                        <Text style={styles.actionButtonText}>{t('govtSchemes')}</Text>
+                                        <Text style={styles.actionButtonText}>{t('govtSchemes') || 'Govt Schemes'}</Text>
                                     )}
                                 </View>
                             </View>
@@ -82,13 +75,16 @@ export default function HomeScreen({ navigation }) {
                                     {isTranslating ? (
                                         <Skeleton width={90} height={16} />
                                     ) : (
-                                        <Text style={styles.actionButtonText}>{t('loanCheck')}</Text>
+                                        <Text style={styles.actionButtonText}>{t('loanCheck') || 'Loan Check'}</Text>
                                     )}
                                 </View>
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.card}>
+                        <TouchableOpacity
+                            style={styles.card}
+                            onPress={() => navigation.navigate('AIChatbot')}
+                        >
                             <View style={styles.imagePlaceholder}>
                                 {isTranslating ? (
                                     <Skeleton width={60} height={60} style={{ borderRadius: 30 }} />
@@ -101,7 +97,7 @@ export default function HomeScreen({ navigation }) {
                                     {isTranslating ? (
                                         <Skeleton width={80} height={16} />
                                     ) : (
-                                        <Text style={styles.actionButtonText}>{t('aiChatBot')}</Text>
+                                        <Text style={styles.actionButtonText}>{t('aiChatBot') || 'AI ChatBot'}</Text>
                                     )}
                                 </View>
                             </View>
@@ -123,7 +119,7 @@ export default function HomeScreen({ navigation }) {
                                     {isTranslating ? (
                                         <Skeleton width={90} height={16} />
                                     ) : (
-                                        <Text style={styles.actionButtonText}>{t('simulations')}</Text>
+                                        <Text style={styles.actionButtonText}>{t('simulations') || 'Simulations'}</Text>
                                     )}
                                 </View>
                             </View>
@@ -131,13 +127,6 @@ export default function HomeScreen({ navigation }) {
                     </View>
                 </ScrollView>
             </View>
-
-            <TouchableOpacity
-                style={styles.floatingButton}
-                onPress={() => navigation.navigate('IRInteraction')}
-            >
-                {/* <Image source={require('./Assets/person1.jpg')} style={styles.floatingImage} /> */}
-            </TouchableOpacity>
         </View>
     );
 }
@@ -152,7 +141,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
-        paddingTop: 50, // Added padding for the top
+        paddingTop: 50,
     },
     header: {
         paddingHorizontal: 16,
@@ -198,29 +187,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 16,
     },
-    cardTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#1A1A1A',
-        marginBottom: 10,
-        paddingHorizontal: 4,
-    },
     cardBottomRow: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 4,
         paddingBottom: 4,
-    },
-    subLabel: {
-        fontSize: 11,
-        color: '#888',
-        marginBottom: 2,
-    },
-    cardValue: {
-        fontSize: 14,
-        fontWeight: '900',
-        color: '#387c2c', // Green color
     },
     actionButton: {
         backgroundColor: 'transparent',
@@ -234,27 +206,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#1A1A1A',
     },
-    floatingButton: {
-        position: 'absolute',
-        bottom: 10,
-        right: 24,
-        zIndex: 100,
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        backgroundColor: '#fff',
-        overflow: 'hidden',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 15,
-    },
-    floatingImage: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        transform: [{ scale: 1 }, { translateY: 4 }],
-    }
 });

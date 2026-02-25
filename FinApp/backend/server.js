@@ -24,10 +24,12 @@ mongoose.connect(process.env.MONGO_DB)
 const authRoutes = require('./routes/auth');
 const translateRoutes = require('./routes/translate');
 const aiRoutes = require('./routes/ai');
+const ttsRoutes = require('./routes/tts');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/translate', translateRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/tts', ttsRoutes);
 
 // Basic health check route
 app.get('/', (req, res) => {

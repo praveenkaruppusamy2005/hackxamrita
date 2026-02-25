@@ -5,7 +5,6 @@ import { StatusBar, ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MainTabs from './MainTabs';
-import IRInteractionScreen from './IRInteractionScreen';
 import LanguageSelectionScreen from './LanguageSelectionScreen';
 import UserDetailsScreen from './UserDetailsScreen';
 import JobDetailsScreen from './JobDetailsScreen';
@@ -19,6 +18,8 @@ import UPIPaymentSimulation from './UPIPaymentSimulation';
 import NetBankingSimulation from './NetBankingSimulation';
 import InvestmentSimulation from './InvestmentSimulation';
 import { LanguageProvider } from './LanguageContext';
+import VoiceAgentScreen from './VoiceAgentScreen';
+import AIChatbotScreen from './AIChatbotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,9 +71,18 @@ export default function App() {
             name="IncomeDetails"
             component={IncomeDetailsScreen}
           />
+        
           <Stack.Screen
             name="MainTabs"
             component={MainTabs}
+          />
+          <Stack.Screen 
+            name="VoiceAgent" 
+            component={VoiceAgentScreen}
+          />
+          <Stack.Screen 
+            name="AIChatbot" 
+            component={AIChatbotScreen}
           />
           <Stack.Screen
             name="GovtSchemes"

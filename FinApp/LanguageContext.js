@@ -444,7 +444,25 @@ export const LanguageProvider = ({ children }) => {
         bondsDesc: "Lending to the Government. The safest possible investment in India.",
         chitDesc: "Community-based saving/borrowing. Good for emergencies, risky for saving.",
         pros: "PROS",
-        cons: "CONS"
+        cons: "CONS",
+        aiAssistant: "AI Assistant",
+        aiHelp: "Your personal financial helper",
+        assistGreeting: "Hello! How can I assist you today?",
+        listening: "Listening...",
+        analyzingProfile: "Analyzing your profile...",
+        tapToSpeak: "Tap microphone to speak",
+        tapToStop: "Tap to stop",
+        continuousMode: "Continuous Mode",
+        conversationCleared: "Conversation cleared. How can I help you?",
+        analyzing: "Analyzing...",
+        goodMorning: "Good Morning",
+        goodAfternoon: "Good Afternoon",
+        goodEvening: "Good Evening",
+        goodNight: "Good Night",
+        govtSchemes: "Govt Schemes",
+        loanCheck: "Loan Check",
+        aiChatBot: "AI ChatBot",
+        simulations: "Simulations"
     };
 
     React.useEffect(() => {
